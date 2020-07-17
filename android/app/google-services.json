@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "37810567737",
+    "firebase_url": "https://listiify.firebaseio.com",
+    "project_id": "listiify",
+    "storage_bucket": "listiify.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37810567737:android:b4c2ba90c8323ec6dc6be8",
+        "android_client_info": {
+          "package_name": "com.anas.listiify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "37810567737-s3ier98mdf63jiius1ktgbsrfu2k7qmg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA5QvwVpJRcwGzTKgb2XW_KZY_uvU5vg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "37810567737-s3ier98mdf63jiius1ktgbsrfu2k7qmg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
