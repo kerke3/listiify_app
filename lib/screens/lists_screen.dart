@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:listiify/components/rounded_button.dart';
+import 'package:listiify/constants.dart';
 
 final _firestore = Firestore.instance;
 FirebaseUser loggedInUser;
@@ -55,64 +56,100 @@ class _ListsScreenState extends State<ListsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: kScaffoldBackground,
         body: SafeArea(
-      child: ListView(children: <Widget>[
-        Stack(children: <Widget>[
-          ClipPath(
-            clipper: WaveClipperTwo(),
-            child: Container(
-              height: 180,
-              width: double.infinity,
-              color: Colors.blueAccent,
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 20, left: 10, right: 15, bottom: 15),
-            constraints: BoxConstraints.tight(Size(100, 100)),
-            child: RawMaterialButton(
-              elevation: 5.0,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              fillColor: Colors.white,
-              shape: CircleBorder(),
-              child: Icon(
-                Icons.list,
-                size: 35,
-                color: Colors.blueAccent,
+            child: ListView(
+          children: <Widget>[
+            Stack(children: <Widget>[
+              ClipPath(
+                clipper: WaveClipperTwo(),
+                child: Container(
+                  height: 180,
+                  width: double.infinity,
+                  color: Colors.blueAccent,
+                ),
               ),
-            ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            height: 160,
-            child: Text(
-              'Personal',
-              style: TextStyle(
-                fontFamily: 'Red Rose',
-                fontSize: 25,
-                fontWeight: FontWeight.w900,
-                color: Colors.white,
+              Container(
+                padding:
+                    EdgeInsets.only(top: 20, left: 10, right: 15, bottom: 15),
+                constraints: BoxConstraints.tight(Size(100, 100)),
+                child: RawMaterialButton(
+                  elevation: 5.0,
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  fillColor: Colors.white,
+                  shape: CircleBorder(),
+                  child: Icon(
+                    Icons.list,
+                    size: 35,
+                    color: Colors.blueAccent,
+                  ),
+                ),
               ),
+              Container(
+                alignment: Alignment.center,
+                height: 160,
+                child: Text('Personal', style: kGreetingTextStyle),
+              ),
+              Positioned(
+                  top: 135,
+                  left: 30,
+                  child: Text(
+                    '12 Tasks',
+                    style: kInfoTextStyle,
+                  ))
+            ]),
+            SizedBox(
+              height: 8.0,
             ),
-          ),
-          Positioned(
-              top: 135,
-              left: 30,
-              child: Text(
-                '12 Tasks',
-                style: TextStyle(
-                    fontSize: 17, fontFamily: 'Red Rose', color: Colors.white),
-              ))
-        ]),
-        SizedBox(
-          height: 8.0,
-        ),
+          ],
+        )),
+        floatingActionButton: FloatingActionButton(
+            elevation: 5.0,
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                        elevation: 5.0,
+                        backgroundColor: Colors.white,
+                        content: TextField(
+                          autofocus: true,
+                        ),
+                        actions: [
+                          RoundedButton(
+                              title: 'Add',
+                              colour: Colors.blueAccent,
+                              onPressed: () {}),
+                        ]);
+                  });
+            }));
+  }
+}
+
+class TaskTile extends StatelessWidget {
+  final bool isChecked;
+  final String taskTitle;
+  final Function checkboxCallback;
+  final Function longPressCallback;
+
+  TaskTile(
+      {this.isChecked,
+      this.taskTitle,
+      this.checkboxCallback,
+      this.longPressCallback});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
         ListTile(
-          leading: Checkbox(
-            value: false,
-            checkColor: Colors.lightGreen.shade400,
-          ),
+          leading: MyCheckBox(),
           title: Text('Task 1'),
         ),
         Divider(
@@ -120,17 +157,22 @@ class _ListsScreenState extends State<ListsScreen> {
           indent: 30,
           color: Colors.grey.shade200,
         ),
-        ListTile(
-          leading: Checkbox(
-            value: false,
-            checkColor: Colors.lightGreen.shade400,
-          ),
-          title: Text(
-            'Task 2',
-            style: TextStyle(),
-          ),
-        ),
-      ]),
-    ));
+      ],
+    );
+  }
+}
+
+class MyCheckBox extends StatefulWidget {
+  @override
+  _MyCheckBoxState createState() => _MyCheckBoxState();
+}
+
+class _MyCheckBoxState extends State<MyCheckBox> {
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      value: false,
+      checkColor: Colors.lightGreen.shade400,
+    );
   }
 }

@@ -5,7 +5,7 @@ import 'package:listiify/components/rounded_text_field.dart';
 import 'package:listiify/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:listiify/screens/lists_screen.dart';
+import 'package:listiify/screens/main_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -33,7 +33,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ClipPath(
                 clipper: WaveClipperTwo(),
                 child: Container(
-                  height: 200,
+                  height: 180,
                   width: double.infinity,
                   color: Colors.blueAccent,
                 ),
@@ -120,7 +120,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             updateUser.displayName = displayName;
                             final updatedUser =
                                 await newUser.user.updateProfile(updateUser);
-                            Navigator.pushNamed(context, ListsScreen.id);
+                            Navigator.pushNamed(context, MainScreen.id);
                             // navigate to new page
                           }
                           setState(() {

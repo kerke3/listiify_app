@@ -16,45 +16,43 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kScaffoldBackground,
-      body: SafeArea(
-        child: ListView(
-          children: <Widget>[
-            ClipPath(
-              clipper: WaveClipperTwo(),
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                color: Colors.blueAccent,
-              ),
+      body: ListView(
+        children: <Widget>[
+          ClipPath(
+            clipper: WaveClipperTwo(),
+            child: Container(
+              height: 180,
+              width: double.infinity,
+              color: Colors.blueAccent,
             ),
-            SizedBox(
-              height: 48.0,
+          ),
+          SizedBox(
+            height: 48.0,
+          ),
+          Center(
+            child: Text(
+              'Listiify',
+              style: kLogoTextStyle,
             ),
-            Center(
-              child: Text(
-                'Listiify',
-                style: kLogoTextStyle,
-              ),
-            ),
-            SizedBox(
-              height: 48.0,
-            ),
-            RoundedButton(
-              title: 'Log In',
-              colour: Colors.blueAccent,
-              onPressed: () {
-                Navigator.pushNamed(context, LoginScreen.id);
-              },
-            ),
-            RoundedButton(
-              title: 'Register',
-              colour: Colors.lightBlueAccent,
-              onPressed: () {
-                Navigator.pushNamed(context, RegistrationScreen.id);
-              },
-            ),
-          ],
-        ),
+          ),
+          SizedBox(
+            height: 48.0,
+          ),
+          RoundedButton(
+            title: 'Log In',
+            colour: Colors.blueAccent,
+            onPressed: () {
+              Navigator.pushNamed(context, LoginScreen.id);
+            },
+          ),
+          RoundedButton(
+            title: 'Register',
+            colour: Colors.lightBlueAccent,
+            onPressed: () {
+              Navigator.pushNamed(context, RegistrationScreen.id);
+            },
+          ),
+        ],
       ),
     );
   }

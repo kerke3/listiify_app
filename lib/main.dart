@@ -4,6 +4,7 @@ import 'package:listiify/screens/start_screen.dart';
 import 'package:listiify/screens/login_screen.dart';
 import 'package:listiify/screens/registration_screen.dart';
 import 'package:listiify/screens/lists_screen.dart';
+import 'package:listiify/screens/main_screen.dart';
 
 void main() {
   runApp(Listiify());
@@ -22,6 +23,7 @@ class Listiify extends StatelessWidget {
         LoginScreen.id: (context) => LoginScreen(),
         RegistrationScreen.id: (context) => RegistrationScreen(),
         ListsScreen.id: (context) => ListsScreen(),
+        MainScreen.id: (context) => MainScreen(),
       },
     );
   }

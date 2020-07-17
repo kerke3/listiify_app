@@ -4,23 +4,24 @@ const kScaffoldBackground = Colors.white;
 
 const kLogoTextStyle = TextStyle(
   color: Colors.blueAccent,
-  fontSize: 70,
+  fontSize: 65,
   fontWeight: FontWeight.w900,
   fontFamily: 'Square Sans Serif',
 );
 
-//const kMessageTextFieldDecoration = InputDecoration(
-//  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-//  hintText: 'Type your message here...',
-//  border: InputBorder.none,
-//);
-//
-//const kMessageContainerDecoration = BoxDecoration(
-//  border: Border(
-//    top: BorderSide(color: Colors.lightBlueAccent, width: 2.0),
-//  ),
-//);
-//
+const kGreetingTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 25,
+  fontWeight: FontWeight.w900,
+  fontFamily: 'Red Rose',
+);
+
+const kInfoTextStyle = TextStyle(
+  color: Colors.white,
+  fontSize: 17,
+  fontFamily: 'Red Rose',
+);
+
 const kTextFieldDecoration = InputDecoration(
   hintText: 'Enter a value',
   prefixIcon: Icon(Icons.person, color: Colors.blueAccent),
