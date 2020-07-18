@@ -32,7 +32,7 @@ class AuthenticationService {
       if (authResult.user != null) {
         UserUpdateInfo updateUser = UserUpdateInfo();
         updateUser.displayName = displayName;
-        var updatedUser = await authResult.user.updateProfile(updateUser);
+        await authResult.user.updateProfile(updateUser);
       }
       return authResult.user != null;
     } catch (e) {
@@ -45,16 +45,6 @@ class AuthenticationService {
       var user = await _firebaseAuth.currentUser();
 
       return (user != null ? user : '');
-    } catch (e) {
-      return e.message;
-    }
-  }
-
-  Future getUserDisplayName() async {
-    try {
-      var user = await _firebaseAuth.currentUser();
-
-      return (user != null ? user.displayName : '');
     } catch (e) {
       return e.message;
     }

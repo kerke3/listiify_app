@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:listiify/models/user.dart';
 
 class Task {
   final String id;
   final String name;
   bool isDone;
-  final String user;
+  final User user;
 
   Task({this.name, this.isDone = false, this.user, this.id});
 
@@ -12,8 +12,14 @@ class Task {
     isDone = !isDone;
   }
 
-  Task.fromData(Map<dynamic, dynamic> data, documentID)
+  Task.fromData(Map<String, dynamic> data, documentID)
       : id = documentID,
+        name = data['name'],
+        isDone = data['isDone'],
+        user = data['user'];
+
+  Task.fromStream(Map<String, dynamic> data)
+      : id = data['id'],
         name = data['name'],
         isDone = data['isDone'],
         user = data['user'];
@@ -22,7 +28,7 @@ class Task {
     return {
       'name': name,
       'isDone': isDone,
-      'user': user,
+      'user': user.toJson(),
     };
   }
 }

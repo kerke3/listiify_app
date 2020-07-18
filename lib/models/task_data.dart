@@ -1,7 +1,10 @@
+import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:collection';
 import 'package:listiify/models/task.dart';
+import 'package:listiify/models/user.dart';
+import 'package:listiify/models/user_data.dart';
 import 'package:listiify/services/firestore_service.dart';
 import 'package:listiify/services/authentication_service.dart';
 
@@ -11,10 +14,6 @@ class TaskData extends ChangeNotifier {
 
   List<Task> _tasks = [];
 
-  String _displayname;
-
-  String _email;
-
   UnmodifiableListView<Task> get tasks {
     return UnmodifiableListView(_tasks);
   }
@@ -23,21 +22,14 @@ class TaskData extends ChangeNotifier {
     return _tasks.length;
   }
 
-  String get displayName {
-    return _displayname;
-  }
-
-  String get email {
-    return _email;
-  }
-
-  void addTask(String newTaskTitle) async {
-    var task = Task(name: newTaskTitle, user: _email, isDone: false);
+  void addTask(String newTaskTitle, String email, String displayName) async {
+    final currentUser = User(email: email, displayName: displayName);
+    var task = Task(name: newTaskTitle, user: currentUser, isDone: false);
     var newTask = await _firestoreService.postTask(task);
     if (newTask is DocumentReference) {
       final task = Task(
           name: newTaskTitle,
-          user: _email,
+          user: currentUser,
           isDone: false,
           id: newTask.documentID);
       _tasks.add(task);
@@ -47,8 +39,8 @@ class TaskData extends ChangeNotifier {
     }
   }
 
-  void getTaskList() async {
-    var newTasks = await _firestoreService.getTasks(_email);
+  void getTaskList(String email) async {
+    var newTasks = await _firestoreService.getTasks(email);
     if (newTasks is List<Task>) {
       _tasks = newTasks;
       notifyListeners();
@@ -79,15 +71,5 @@ class TaskData extends ChangeNotifier {
       _tasks.remove(task);
       notifyListeners();
     }
-  }
-
-  void setUserDisplay() async {
-    _displayname = await _authenticationService.getUserDisplayName();
-    notifyListeners();
-  }
-
-  void setUserEmail(String email) async {
-    _email = email;
-    notifyListeners();
   }
 }

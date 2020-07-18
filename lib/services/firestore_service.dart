@@ -1,16 +1,31 @@
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:listiify/services/authentication_service.dart';
-
 import 'package:listiify/models/task.dart';
-import 'package:listiify/models/task_data.dart';
+import 'package:listiify/models/user.dart';
 import 'package:flutter/services.dart';
 
 class FirestoreService {
-  final AuthenticationService _authenticationService = AuthenticationService();
-
   final CollectionReference _tasksCollectionReference =
       Firestore.instance.collection('tasks');
+
+  final CollectionReference _usersCollectionReference =
+      Firestore.instance.collection('users');
+
+  CollectionReference get taskscollection {
+    return _tasksCollectionReference;
+  }
+
+  Future postUser(User user) async {
+    try {
+      DocumentReference newUser =
+          await _usersCollectionReference.add(user.toJson());
+      return newUser;
+    } catch (e) {
+      if (e is PlatformException) {
+        return e.message;
+      }
+      return e.toString();
+    }
+  }
 
   Future postTask(Task task) async {
     try {
@@ -71,22 +86,4 @@ class FirestoreService {
       return e.toString();
     }
   }
-
-//  Future<List<Task>> getUserTaskList() async {
-//    try {
-//      QuerySnapshot qShot = await _tasksCollectionReference
-//          .where('user', isEqualTo: _authenticationService.getCurrentUser())
-//          .getDocuments();
-//      print(qShot);
-//
-//      List<Task> taskList = qShot.documents
-//          .map((doc) =>
-//              Task(name: doc.data['task_name'], isDone: doc.data['done']))
-//          .toList();
-//      final TaskData _taskData = TaskData();
-//      _taskData.newTaskList(taskList);
-//    } catch (e) {
-//      return e.message;
-//    }
-//  }
 }

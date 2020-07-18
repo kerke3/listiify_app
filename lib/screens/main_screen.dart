@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:random_color/random_color.dart';
-import 'package:listiify/components/oval_button.dart';
 import 'package:listiify/constants.dart';
 import 'package:listiify/widgets/list_card.dart';
 

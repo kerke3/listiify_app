@@ -8,6 +8,7 @@ import 'package:listiify/screens/lists_screen.dart';
 import 'package:listiify/services/authentication_service.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:listiify/models/task_data.dart';
+import 'package:listiify/models/user_data.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -125,9 +126,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
                         if (result is bool) {
                           if (result) {
-                            Provider.of<TaskData>(context).setUserEmail(email);
-                            Provider.of<TaskData>(context).setUserDisplay();
-                            Provider.of<TaskData>(context).getTaskList();
+                            Provider.of<UserData>(context)
+                                .registerUser(email, displayName);
+                            Provider.of<TaskData>(context).getTaskList(email);
                             Navigator.pushNamed(context, ListsScreen.id);
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(

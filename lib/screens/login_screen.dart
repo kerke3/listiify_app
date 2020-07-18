@@ -9,6 +9,7 @@ import 'package:listiify/constants.dart';
 import 'package:listiify/components/rounded_button.dart';
 import 'package:listiify/components/rounded_text_field.dart';
 import 'package:listiify/models/task_data.dart';
+import 'package:listiify/models/user_data.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -62,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         nullError: 'Please enter your email',
                         icon: Icon(Icons.email, color: Colors.blueAccent),
                         obscure: false,
-                        onChanged: (value) async {
+                        onChanged: (value) {
                           setState(() {
                             email = value;
                           });
@@ -104,9 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                         if (result is bool) {
                           if (result) {
-                            Provider.of<TaskData>(context).setUserDisplay();
-                            Provider.of<TaskData>(context).setUserEmail(email);
-                            Provider.of<TaskData>(context).getTaskList();
+                            Provider.of<UserData>(context).setUser();
+                            Provider.of<TaskData>(context).getTaskList(email);
                             Navigator.pushNamed(context, ListsScreen.id);
                           } else {
                             Scaffold.of(context).showSnackBar(SnackBar(
@@ -121,10 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: Colors.red,
                           ));
                         }
-                        if (result == true) {
-                          // navigate to new page
-
-                        } else {}
                       } else {
                         setState(() {
                           showSpinner = false;
