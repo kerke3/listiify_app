@@ -1,11 +1,13 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:listiify/components/rounded_button.dart';
 import 'package:listiify/components/rounded_text_field.dart';
 import 'package:listiify/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:listiify/screens/lists_screen.dart';
+import 'package:listiify/services/authentication_service.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:listiify/screens/main_screen.dart';
+import 'package:listiify/models/task_data.dart';
 
 class RegistrationScreen extends StatefulWidget {
   static const String id = 'registration_screen';
@@ -15,7 +17,7 @@ class RegistrationScreen extends StatefulWidget {
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _auth = FirebaseAuth.instance;
+  final AuthenticationService _authenticationService = AuthenticationService();
   bool showSpinner = false;
   String displayName;
   String email;
@@ -111,27 +113,31 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         showSpinner = true;
                       });
                       if (_formKey.currentState.validate()) {
-                        try {
-                          final newUser =
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: email, password: password);
-                          if (newUser != null) {
-                            UserUpdateInfo updateUser = UserUpdateInfo();
-                            updateUser.displayName = displayName;
-                            final updatedUser =
-                                await newUser.user.updateProfile(updateUser);
-                            Navigator.pushNamed(context, MainScreen.id);
-                            // navigate to new page
+                        final result =
+                            await _authenticationService.signUpWithEmail(
+                                email: email,
+                                password: password,
+                                displayName: displayName);
+
+                        setState(() {
+                          showSpinner = false;
+                        });
+
+                        if (result is bool) {
+                          if (result) {
+                            Provider.of<TaskData>(context).setUserEmail(email);
+                            Provider.of<TaskData>(context).setUserDisplay();
+                            Provider.of<TaskData>(context).getTaskList();
+                            Navigator.pushNamed(context, ListsScreen.id);
+                          } else {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('Please try again later'),
+                              backgroundColor: Colors.red,
+                            ));
                           }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        } catch (e) {
-                          setState(() {
-                            showSpinner = false;
-                          });
+                        } else {
                           Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text(e.message),
+                            content: Text(result),
                             backgroundColor: Colors.red,
                           ));
                         }

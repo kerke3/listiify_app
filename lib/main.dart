@@ -1,10 +1,12 @@
+import 'package:provider/provider.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:listiify/screens/start_screen.dart';
+
+import 'package:listiify/models/task_data.dart';
 import 'package:listiify/screens/login_screen.dart';
 import 'package:listiify/screens/registration_screen.dart';
 import 'package:listiify/screens/lists_screen.dart';
-import 'package:listiify/screens/main_screen.dart';
 
 void main() {
   runApp(Listiify());
@@ -16,15 +18,16 @@ class Listiify extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Color(0xFF005CB2),
     ));
-    return MaterialApp(
-      initialRoute: StartScreen.id,
-      routes: {
-        StartScreen.id: (context) => StartScreen(),
-        LoginScreen.id: (context) => LoginScreen(),
-        RegistrationScreen.id: (context) => RegistrationScreen(),
-        ListsScreen.id: (context) => ListsScreen(),
-        MainScreen.id: (context) => MainScreen(),
-      },
+    return ChangeNotifierProvider(
+      builder: (context) => TaskData(),
+      child: MaterialApp(
+        initialRoute: LoginScreen.id,
+        routes: {
+          LoginScreen.id: (context) => LoginScreen(),
+          RegistrationScreen.id: (context) => RegistrationScreen(),
+          ListsScreen.id: (context) => ListsScreen(),
+        },
+      ),
     );
   }
 }

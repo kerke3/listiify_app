@@ -1,11 +1,14 @@
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:listiify/screens/lists_screen.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:listiify/services/authentication_service.dart';
+import 'package:listiify/screens/registration_screen.dart';
+import 'package:listiify/constants.dart';
 import 'package:listiify/components/rounded_button.dart';
 import 'package:listiify/components/rounded_text_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:listiify/constants.dart';
-import 'package:listiify/screens/main_screen.dart';
+import 'package:listiify/models/task_data.dart';
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -14,9 +17,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthenticationService _authenticationService = AuthenticationService();
   final _formKey = GlobalKey<FormState>();
   bool showSpinner = false;
-  final _auth = FirebaseAuth.instance;
   String email;
   String password;
 
@@ -94,33 +97,48 @@ class _LoginScreenState extends State<LoginScreen> {
                         showSpinner = true;
                       });
                       if (_formKey.currentState.validate()) {
-                        try {
-                          final user = await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
-                          if (user != null) {
-                            // navigate to new page
-                            Navigator.pushNamed(context, MainScreen.id);
+                        final result = await _authenticationService
+                            .loginWithEmail(email: email, password: password);
+                        setState(() {
+                          showSpinner = false;
+                        });
+                        if (result is bool) {
+                          if (result) {
+                            Provider.of<TaskData>(context).setUserDisplay();
+                            Provider.of<TaskData>(context).setUserEmail(email);
+                            Provider.of<TaskData>(context).getTaskList();
+                            Navigator.pushNamed(context, ListsScreen.id);
+                          } else {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(
+                                  'General login failure. Please try again later'),
+                              backgroundColor: Colors.red,
+                            ));
                           }
-                          setState(() {
-                            showSpinner = false;
-                          });
-                        } catch (e) {
-                          setState(() {
-                            showSpinner = false;
-                          });
-
+                        } else {
                           Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text(e.message),
+                            content: Text(result),
                             backgroundColor: Colors.red,
                           ));
                         }
+                        if (result == true) {
+                          // navigate to new page
+
+                        } else {}
                       } else {
                         setState(() {
                           showSpinner = false;
                         });
                       }
                     });
-              })
+              }),
+              RoundedButton(
+                title: 'Register',
+                colour: Colors.lightBlueAccent,
+                onPressed: () {
+                  Navigator.pushNamed(context, RegistrationScreen.id);
+                },
+              )
             ],
           ),
         ),
