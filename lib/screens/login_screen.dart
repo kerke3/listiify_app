@@ -63,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         nullError: 'Please enter your email',
                         icon: Icon(Icons.email, color: Colors.blueAccent),
                         obscure: false,
-                        onChanged: (value) {
+                        onChanged: (value) async {
                           setState(() {
                             email = value;
                           });
