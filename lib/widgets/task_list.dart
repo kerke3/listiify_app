@@ -1,7 +1,5 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:listiify/components/oval_button.dart';
 import 'package:listiify/widgets/task_tile.dart';
 import 'package:listiify/models/task_data.dart';
 
@@ -13,18 +11,15 @@ class TasksList extends StatelessWidget {
         return ListView.builder(
           itemBuilder: (context, index) {
             final task = taskData.tasks[index];
-            return Slidable(
-              actionPane: SlidableBehindActionPane(),
-              actionExtentRatio: 0.25,
-              actions: <Widget>[
-                OvalButton(
-                  colour: Colors.red,
-                  icon: Icon(Icons.delete, color: Colors.white),
-                  onPressed: () {
-                    taskData.deleteTask(task);
-                  },
-                )
-              ],
+            return Dismissible(
+              direction: DismissDirection.startToEnd,
+              key: Key(key.toString()),
+              onDismissed: (direction) {
+                taskData.deleteTask(task);
+                Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Text("Task Deleted"),
+                    backgroundColor: Colors.red));
+              },
               child: TaskTile(
                 taskTitle: task.name,
                 isChecked: task.isDone,

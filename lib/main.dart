@@ -23,7 +23,7 @@ class Listiify extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => TaskData()),
         ChangeNotifierProvider(create: (context) => UserData()),
-        StreamProvider<List<Task>>.value(value: UserData().streamTasks),
+//        StreamProvider<List<Task>>.value(value: UserData().streamTasks),
       ],
       child: MaterialApp(
         initialRoute: LoginScreen.id,

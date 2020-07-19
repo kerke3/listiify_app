@@ -11,6 +11,9 @@ import 'package:listiify/models/task_data.dart';
 import 'package:listiify/models/user_data.dart';
 import 'package:listiify/widgets/task_list.dart';
 
+
+// TODO Stream the tasks somehow
+
 class ListsScreen extends StatefulWidget {
   static const String id = 'lists_screen';
 

@@ -16,7 +16,7 @@ class Task {
       : id = documentID,
         name = data['name'],
         isDone = data['isDone'],
-        user = data['user'];
+        user = User.fromData(data['user']);
 
   Task.fromStream(Map<String, dynamic> data)
       : id = data['id'],

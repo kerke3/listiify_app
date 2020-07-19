@@ -70,7 +70,7 @@ class FirestoreService {
     try {
       List<Task> taskList = [];
       var userData = await _tasksCollectionReference
-          .where('user', isEqualTo: email)
+          .where('user.email', isEqualTo: email)
           .getDocuments()
           .then((querySnapshot) {
         querySnapshot.documents.forEach((result) {
