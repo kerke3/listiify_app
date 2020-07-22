@@ -1,20 +1,17 @@
 class User {
   final String displayName;
   final String email;
-  bool isAdmin;
 
-  User({this.displayName, this.isAdmin = false, this.email});
+  User({this.displayName, this.email});
 
   User.fromData(Map<dynamic, dynamic> data)
       : displayName = data['displayName'],
-        email = data['email'],
-        isAdmin = data['isAdmin'];
+        email = data['email'];
 
   Map<String, dynamic> toJson() {
     return {
-      'diplayName': displayName,
+      'displayName': displayName,
       'email': email,
-      'isAdmin': isAdmin,
     };
   }
 }

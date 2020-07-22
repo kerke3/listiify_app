@@ -1,30 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:listiify/models/task.dart';
-import 'package:listiify/models/user.dart';
 import 'package:flutter/services.dart';
 
 class FirestoreService {
   final CollectionReference _tasksCollectionReference =
       Firestore.instance.collection('tasks');
 
-  final CollectionReference _usersCollectionReference =
-      Firestore.instance.collection('users');
-
   CollectionReference get taskscollection {
     return _tasksCollectionReference;
-  }
-
-  Future postUser(User user) async {
-    try {
-      DocumentReference newUser =
-          await _usersCollectionReference.add(user.toJson());
-      return newUser;
-    } catch (e) {
-      if (e is PlatformException) {
-        return e.message;
-      }
-      return e.toString();
-    }
   }
 
   Future postTask(Task task) async {

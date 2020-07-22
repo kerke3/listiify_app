@@ -1,15 +1,11 @@
-import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:collection';
 import 'package:listiify/models/task.dart';
 import 'package:listiify/models/user.dart';
-import 'package:listiify/models/user_data.dart';
 import 'package:listiify/services/firestore_service.dart';
-import 'package:listiify/services/authentication_service.dart';
 
 class TaskData extends ChangeNotifier {
-  AuthenticationService _authenticationService = AuthenticationService();
   FirestoreService _firestoreService = FirestoreService();
 
   List<Task> _tasks = [];
@@ -39,19 +35,26 @@ class TaskData extends ChangeNotifier {
     }
   }
 
+  void streamTasks(email) {
+    _firestoreService.taskscollection
+        .where("user.email", isEqualTo: email)
+        .snapshots()
+        .listen((snapshot) {
+      List<Task> newsTasks = [];
+      for (var document in snapshot.documents) {
+        newsTasks.add(Task.fromData(document.data, document.documentID));
+      }
+      _tasks = newsTasks;
+      notifyListeners();
+    });
+  }
+
   void getTaskList(String email) async {
     var newTasks = await _firestoreService.getTasks(email);
     if (newTasks is List<Task>) {
       _tasks = newTasks;
       notifyListeners();
-    } else {
-      print(newTasks);
-    }
-  }
-
-  void setTaskList(List<Task> taskList) {
-    _tasks = taskList;
-    notifyListeners();
+    } else {}
   }
 
   void updateTask(Task task) async {

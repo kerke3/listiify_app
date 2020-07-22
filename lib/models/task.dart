@@ -22,7 +22,7 @@ class Task {
       : id = data['id'],
         name = data['name'],
         isDone = data['isDone'],
-        user = data['user'];
+        user = User.fromData(data['user']);
 
   Map<String, dynamic> toJson() {
     return {

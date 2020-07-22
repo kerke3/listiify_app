@@ -105,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                         if (result is bool) {
                           if (result) {
-                            Provider.of<UserData>(context).setUser();
+                            Provider.of<UserData>(context).setUser(email);
                             Provider.of<TaskData>(context).getTaskList(email);
                             Navigator.pushNamed(context, ListsScreen.id);
                           } else {
